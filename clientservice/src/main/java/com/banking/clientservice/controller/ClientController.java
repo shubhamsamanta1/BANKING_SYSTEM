@@ -13,7 +13,7 @@ public class ClientController {
     ClientDetailService clientDetailService;
 
     @PostMapping
-    public ClientDetail createUpdateClient(@RequestBody ClientDetail clientDetail){
+    public String createUpdateClient(@RequestBody ClientDetail clientDetail){
         return clientDetailService.createUpdateClient(clientDetail);
     }
 

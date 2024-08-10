@@ -17,11 +17,11 @@ public class LoginController {
 
     @PostMapping("/userlogin")
     public String userLogin(@RequestBody ClientDetail clientDetail){
-        return loginService.userLogin(clientDetail.getClientID(), clientDetail.getPassword());
+        return loginService.userLogin(clientDetail);
     }
 
     @PostMapping("/updatepassword")
     public String passwordReset(@RequestBody ClientDetail clientDetail){
-        return loginService.passwordReset(clientDetail.getClientID(), clientDetail.getPassword());
+        return loginService.passwordReset(clientDetail);
     }
 }
