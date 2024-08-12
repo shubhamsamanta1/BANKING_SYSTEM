@@ -3,6 +3,7 @@ package com.banking.loginservice.entites;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
@@ -35,6 +36,7 @@ public class ClientDetail {
 
     String nationality;
 
+    @Column(unique=true)
     String govId;
 
     String password;

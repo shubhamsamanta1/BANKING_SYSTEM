@@ -35,6 +35,7 @@ public class ClientDetail {
 
     String nationality;
 
+    @Column(unique=true)
     String govId;
 
     String password;

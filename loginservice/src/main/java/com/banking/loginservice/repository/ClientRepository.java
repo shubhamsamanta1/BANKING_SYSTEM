@@ -27,4 +27,7 @@ public interface ClientRepository extends JpaRepository<ClientDetail, Long> {
 
     @Query(value = "SELECT contact FROM client_details u WHERE u.clientid = :id", nativeQuery = true)
     Long findByContact(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM client_details u WHERE u.gov_id = :gov_id", nativeQuery = true)
+    ClientDetail findByGovId(@Param("gov_id") String gov_id);
 }

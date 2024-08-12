@@ -58,4 +58,18 @@ public class LoginService {
         }
         return "PASSWORD UPDATE FAILED: INCORRECT CLIENT ID OR CLIENT DOESN'T EXIST";
     }
+
+    public String getClientIdByGovId(String govid){
+        if(!(clientRepository.findByGovId(govid) == null)){
+            ClientDetail clientDetail = clientRepository.findByGovId(govid);
+            NotifyDetail notifyDetail = new NotifyDetail();
+            notifyDetail.setClientId(clientDetail.getClientID());
+            notifyDetail.setEmail(clientRepository.findByEmail(clientDetail.getClientID()));
+            notifyDetail.setContact(clientRepository.findByContact(clientDetail.getClientID()));
+            notifyDetail.setAccountId((long) 9999); //dummy account
+            notifyDetail.setMessage("NOTIFY");
+            return callNotify.notifyClientByDetails(notifyDetail);
+        }
+        return "INCORRECT GOV ID OR CLIENT DOESN'T EXIST";
+    }
 }
