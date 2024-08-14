@@ -25,14 +25,7 @@ public class NotifyService {
         message.setFrom("developmenttester19@gmail.com");
         message.setTo(notifyDetail.getEmail());
         message.setSubject("UPDATE FROM BANK");
-        if(notifyDetail.getMessage().equals("NOTIFY")){
-            notifyDetail.setMessage("REQUESTED CLIENT ID IS NOTIFIED TO CLIENT VIA MAIL.");
-            reason = notifyDetail.getMessage();
-            message.setText("Dear Customer, \n\n \tYOUR CLIENT ID IS "+notifyDetail.getClientId()+"\n\nThanks & Regards, \nBANK");
-        }
-        else {
-            message.setText("Dear Customer, \n\n \t"+reason+"\n\nThanks & Regards, \nBANK");
-        }
+        message.setText("Dear Customer, \n\n \t"+reason+"\n\nThanks & Regards, \n BANK");
         javaMailSender.send(message);
         return "NOTIFICATION SENT AND RECORD SUCCESSFULLY, REASON: "+reason;
     }

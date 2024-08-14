@@ -18,33 +18,34 @@ public class ClientDetailService {
     @Autowired
     CallNotify callNotify;
 
+    @Autowired
+    GetAccountDetails getAccountDetails;
 
     public String createUpdateClient(ClientDetail clientDetail){
-
-        NotifyDetail notifyDetail = new NotifyDetail();
-        notifyDetail.setClientId(clientDetail.getClientID());
-        notifyDetail.setEmail(clientDetail.getEmail());
-        notifyDetail.setContact(clientDetail.getContact());
-        notifyDetail.setAccountId((long) 9999);//dummy account
         if(clientDetail.getClientID() == null){
             clientDetailRepo.save(clientDetail);
-            notifyDetail.setClientId(clientDetail.getClientID());
-            notifyDetail.setMessage("NEW CLIENT CREATED.");
+            return iAmNotifier(clientDetail.getClientID(), clientDetail.getEmail(), clientDetail.getContact(),"New client created with client ID "+clientDetail.getClientID());
         }
-        else {
-            if(clientDetailRepo.findById(clientDetail.getClientID()).isEmpty()){
-                return "CLIENT UPDATE FAILED: INCORRECT CLIENT ID OR CLIENT DOESN'T EXIST";
-            }
-            else {
-                clientDetailRepo.save(clientDetail);
-                notifyDetail.setMessage("CLIENT DETAILS UPDATED");
-            }
-        }
-        return callNotify.notifyClientByDetails(notifyDetail);
+            clientDetailRepo.save(clientDetail);
+            return iAmNotifier(clientDetail.getClientID(), clientDetail.getEmail(), clientDetail.getContact(),"Updated client details for client ID "+clientDetail.getClientID());
+
     }
 
     public ClientDetail getClientDetails (Long clientID){
-            return clientDetailRepo.findById(clientID).orElseThrow(() -> new RuntimeException("NOT_FOUND")) ;
+            ClientDetail client = clientDetailRepo.findById(clientID).orElseThrow(() -> new RuntimeException("NOT_FOUND"));
+            client.setSbCbDetails(getAccountDetails.getAllSbCbAccByClientID(clientID));
+            client.setLoanAccDetails(getAccountDetails.getAllLoanAccByClientID(clientID));
+            return  client;
+    }
+
+    public String iAmNotifier(Long clientId, String email, Long contact, String message){
+        NotifyDetail notifyDetail = new NotifyDetail();
+        notifyDetail.setClientId(clientId);
+        notifyDetail.setEmail(email);
+        notifyDetail.setContact(contact);
+        notifyDetail.setAccountId((long) 9999);
+        notifyDetail.setMessage(message);
+        return callNotify.notifyClientByDetails(notifyDetail);
     }
 
 

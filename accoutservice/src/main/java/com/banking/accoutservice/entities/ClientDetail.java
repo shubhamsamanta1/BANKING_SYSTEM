@@ -1,13 +1,11 @@
-package com.banking.clientservice.Entities;
+package com.banking.accoutservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
-import java.time.DateTimeException;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Getter
@@ -43,9 +41,4 @@ public class ClientDetail {
 
     @UpdateTimestamp
     Timestamp tmStamp;
-
-    transient List<SbCbDetail> sbCbDetails;
-
-    transient List<LoanAccDetail> loanAccDetails;
-
 }
