@@ -1,10 +1,9 @@
-package com.banking.accoutservice.entities;
+package com.banking.transactionservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.annotation.processing.Generated;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
@@ -15,30 +14,30 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "SbCb_Details")
-public class SbCbdetail {
+@Table(name = "Transaction_Detail")
+public class TxnDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    Long txnID;
+
     Long accountID;
 
-    Long clientID;
+    Long payingAccID;
 
-    Long branchCode;
+    String txnType;
 
-    String accType;
+    LocalDate txnDate;
 
-    BigDecimal accBalance;
+    BigDecimal txnAmount;
 
-    LocalDate lastTxnDate ;
+    String txnStatus;
 
-    String accStatus;
+    String txnReason;
 
-    Long lastDoneTxnID;
+    String txnMessage;
 
     @UpdateTimestamp
     Date tmStamp;
-
-
 
 }

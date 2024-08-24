@@ -1,10 +1,9 @@
-package com.banking.accoutservice.entities;
+package com.banking.transactionservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.annotation.processing.Generated;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
@@ -17,6 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Table(name = "SbCb_Details")
 public class SbCbdetail {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

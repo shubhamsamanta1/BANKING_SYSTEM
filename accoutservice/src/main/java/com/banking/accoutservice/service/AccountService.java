@@ -10,8 +10,12 @@ import com.banking.accoutservice.repository.SbCbAccRepo;
 import com.banking.accoutservice.repository.ScheduleEventsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -88,6 +92,8 @@ public class AccountService {
     public ScheduleEvents getAnEventAfterLoanAccountCreation(LoanAccDetail loanAccDetail){
         ScheduleEvents scheduleEvents = new ScheduleEvents();
         scheduleEvents.setAccountID(loanAccDetail.getAccountID());
+        scheduleEvents.setPayerAccountID(loanAccDetail.getPaymentSourceBankID());
+        scheduleEvents.setTxnType("LOAN");
         scheduleEvents.setClientID(loanAccDetail.getClientID());
         scheduleEvents.setTxnAmount(loanAccDetail.getEmiAmount());
         scheduleEvents.setEventStatus("ACTIVE");
@@ -95,13 +101,24 @@ public class AccountService {
         LocalDate localDate = LocalDate.now();
         scheduleEvents.setEventStartDate(localDate);
         LocalDate nextTxnDate = loanAccDetail.getEmiCycleDate();
-        scheduleEvents.setNextTxnDate(nextTxnDate.plusDays(30));
-        scheduleEvents.setEventEndDate(localDate.plusMonths(loanAccDetail.getTenureInMonths()));
+        scheduleEvents.setNextTxnDate(nextTxnDate.plusMonths(1));
+        scheduleEvents.setEventEndDate(localDate.plusYears(loanAccDetail.getTenure()));
         return scheduleEvents;
     }
 
+    @Transactional
     public  String createUpdateLoanAccount(LoanAccDetail loanAccDetail){
         if(loanAccDetail.getAccountID() == null) {
+            loanAccDetail.setAmountToBePaid(
+                    loanAccDetail.getLoanAmount().multiply(
+                            BigDecimal.ONE.add(
+                                    loanAccDetail.getIntrestRate().divide(BigDecimal.valueOf(100))
+                                            .multiply(BigDecimal.valueOf(loanAccDetail.getTenure())))));
+            loanAccDetail.setEmiAmount(
+                    loanAccDetail.getAmountToBePaid().divide(
+                            BigDecimal.valueOf(12).multiply(BigDecimal.valueOf(loanAccDetail.getTenure())),
+                            2,
+                            RoundingMode.HALF_UP));
             loanAccRepo.save(loanAccDetail);
             String response = iAmNotifier(loanAccDetail.getClientID(), loanAccDetail.getAccountID(),
                     clientDetailRepo.findEmailByClientID(loanAccDetail.getClientID()),
@@ -109,6 +126,18 @@ public class AccountService {
             CreateUpdateScheduleEvents(getAnEventAfterLoanAccountCreation(loanAccDetail));
             return response;
         }
+        loanAccDetail.setAmountToBePaid(
+                loanAccDetail.getLoanAmount().multiply(
+                        BigDecimal.ONE.add(
+                                loanAccDetail.getIntrestRate().divide(BigDecimal.valueOf(100))
+                                        .multiply(BigDecimal.valueOf(loanAccDetail.getTenure())))));
+        loanAccDetail.setEmiAmount(
+                loanAccDetail.getAmountToBePaid().divide(
+                        BigDecimal.valueOf(12).multiply(BigDecimal.valueOf(loanAccDetail.getTenure())),
+                        2,
+                        RoundingMode.HALF_UP));
+        scheduleEventsRepo.updateScheduleEvent(loanAccDetail.getEmiAmount(), LocalDateTime.now(),loanAccDetail.getAccountID());
+
         loanAccRepo.save(loanAccDetail);
         return iAmNotifier(loanAccDetail.getClientID(), loanAccDetail.getAccountID(),
                 clientDetailRepo.findEmailByClientID(loanAccDetail.getClientID()),

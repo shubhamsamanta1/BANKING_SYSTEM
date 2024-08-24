@@ -1,4 +1,4 @@
-package com.banking.accoutservice.entities;
+package com.banking.transactionservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;

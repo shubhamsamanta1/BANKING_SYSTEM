@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -28,19 +29,19 @@ public class LoanAccDetail {
 
     Long paymentSourceBankID;
 
-    int intrestRate;
+    BigDecimal intrestRate;
 
-    Long loanAmount;
+    BigDecimal loanAmount;
 
-    Long amountPaidTillDate;
+    BigDecimal AmountToBePaid;
 
-    Long balanceAmountToBePaid;
+    BigDecimal amountPaidTillDate;
 
-    int tenureInMonths;
+    int tenure;
 
     int emiCyclesCompleted;
 
-    Long emiAmount;
+    BigDecimal emiAmount;
 
     String loanType;
 

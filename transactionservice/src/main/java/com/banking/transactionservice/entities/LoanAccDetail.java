@@ -1,10 +1,9 @@
-package com.banking.accoutservice.entities;
+package com.banking.transactionservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.annotation.processing.Generated;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
@@ -15,8 +14,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "SbCb_Details")
-public class SbCbdetail {
+@Table(name = "LoanAcc_Details")
+public class LoanAccDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,19 +25,34 @@ public class SbCbdetail {
 
     Long branchCode;
 
-    String accType;
+    String paymentSourceBankName;
 
-    BigDecimal accBalance;
+    Long paymentSourceBankID;
 
-    LocalDate lastTxnDate ;
+    BigDecimal intrestRate;
 
-    String accStatus;
+    BigDecimal loanAmount;
+
+    BigDecimal AmountToBePaid;
+
+    BigDecimal amountPaidTillDate;
+
+    int tenure;
+
+    int emiCyclesCompleted;
+
+    BigDecimal emiAmount;
+
+    String loanType;
+
+    LocalDate emiCycleDate;
 
     Long lastDoneTxnID;
 
+    String accStatus;
+
     @UpdateTimestamp
     Date tmStamp;
-
 
 
 }

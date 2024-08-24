@@ -1,14 +1,11 @@
-package com.banking.clientservice.Entities;
+package com.banking.transactionservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
-import java.time.DateTimeException;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Getter
@@ -18,7 +15,6 @@ import java.util.List;
 @Entity
 @Table(name = "Client_Details")
 public class ClientDetail {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long clientID;
@@ -31,7 +27,7 @@ public class ClientDetail {
 
     Long contact;
 
-    LocalDate dateOfBirth;
+    Date dateOfBirth;
 
     String email;
 
@@ -44,9 +40,4 @@ public class ClientDetail {
 
     @UpdateTimestamp
     Timestamp tmStamp;
-
-    transient List<SbCbDetail> sbCbDetails;
-
-    transient List<LoanAccDetail> loanAccDetails;
-
 }
