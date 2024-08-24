@@ -2,6 +2,7 @@ package com.banking.transactionservice.sevice;
 
 import com.banking.transactionservice.entities.*;
 import com.banking.transactionservice.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
@@ -379,8 +383,13 @@ public class TransactionService {
         return "Automated txn processed successfully.";
     }
 
-    public List<TxnDetails> getAllTxnByAccId(Long accountID){
-        return txnRepo.findAllByAccountID(accountID);
+    public List<TxnDetails> getAllTxnByAccId(String accountType, Long accountID){
+        if(accountType.equals("LOAN")){
+            return Optional.ofNullable(txnRepo.getLoanTxn(accountID))
+                    .orElse(Collections.emptyList());
+        }
+        return Optional.ofNullable(txnRepo.getSbCbTxn(accountID))
+                .orElse(Collections.emptyList());
     }
 
     public String iAmNotifier(Long clientId, Long accountId, String email, Long contact, String message){
