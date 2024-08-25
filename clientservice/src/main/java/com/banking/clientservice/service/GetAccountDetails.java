@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(url = "http://localhost:8083" , name = "ACCOUNT-CLIENT")
+@FeignClient(name = "SERVICE-ACCOUNT")
 public interface GetAccountDetails {
 
     @GetMapping("/AccountService/SbCbAccount/ClientID/{accountId}")

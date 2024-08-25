@@ -21,14 +21,14 @@ public class AccountController {
         return accountService.createUpdateSbCbAccount(sbCbdetail);
     }
 
-    @GetMapping("/SbCbAccount/ClientID/{accountId}")
-    public List<SbCbdetail> getAllSbCbAccByClientID(@PathVariable Long accountId){
-        return accountService.getAllSbCbAccByClientID(accountId);
+    @GetMapping("/SbCbAccount/ClientID/{clientId}")
+    public List<SbCbdetail> getAllSbCbAccByClientID(@PathVariable Long clientId){
+        return accountService.getAllSbCbAccByClientID(clientId);
     }
 
-    @GetMapping("/SbCbAccount/AccountID/{clientId}")
-    public SbCbdetail getAllSbCbAccByAccountID(@PathVariable Long clientId){
-        return accountService.getSbCbAccDetailsByAccID(clientId);
+    @GetMapping("/SbCbAccount/AccountID/{accountId}")
+    public SbCbdetail getAllSbCbAccByAccountID(@PathVariable Long accountId){
+        return accountService.getSbCbAccDetailsByAccID(accountId);
     }
 
     @PostMapping("/ScheduleEvents")
