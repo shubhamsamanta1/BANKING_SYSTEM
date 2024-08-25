@@ -24,7 +24,7 @@ public class TransactionController {
         return transactionService.autoCreateProcessTxn();
     }
 
-    @GetMapping("/{accountType}/{accountID}")
+    @GetMapping(" ")
     public List<TxnDetails> getAllTxnByAccId(@PathVariable String accountType, @PathVariable Long accountID){
         return transactionService.getAllTxnByAccId(accountType,accountID);
     }
